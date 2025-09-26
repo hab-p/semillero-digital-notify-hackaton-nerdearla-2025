@@ -1,3 +1,16 @@
+# Frontend
+
+React + TypeScript app scaffolded for Vite + Tailwind CSS (dark mode).
+
+Scripts:
+
+- `npm run dev` — start dev server on `http://localhost:5173`
+- `npm run build` — build production bundle
+
+Notes:
+
+- The UI uses Tailwind with `darkMode: 'class'`. You can toggle dark mode by adding `class="dark"` to the `body` element or via JS.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

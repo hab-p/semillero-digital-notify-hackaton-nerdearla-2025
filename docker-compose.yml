@@ -1,0 +1,71 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:6
+    container_name: sd_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  auth-service:
+    build: ./services/auth-service
+    container_name: sd_auth
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "4001:4000"
+    depends_on:
+      - mongo
+
+  classroom-service:
+    build: ./services/classroom-service
+    container_name: sd_classroom
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "4002:4000"
+    depends_on:
+      - mongo
+
+  notifications-service:
+    build: ./services/notifications-service
+    container_name: sd_notifications
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "4003:4000"
+    depends_on:
+      - mongo
+
+  api-gateway:
+    build: ./services/api-gateway
+    container_name: sd_gateway
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - classroom-service
+      - notifications-service
+
+  frontend:
+    build: ./frontend
+    container_name: sd_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+
+volumes:
+  mongo_data:
+    driver: local
+
+
